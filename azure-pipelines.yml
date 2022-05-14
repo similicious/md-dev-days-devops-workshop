@@ -11,7 +11,7 @@ variables:
   azureSubscription: 'b97b85a0-99ea-49f8-a61d-6d4cbec0b062'
 
   # Function app name
-  functionAppName: 'orderfoodjfe'
+  functionAppName: 'orderfood$(attendeeId)'
 
   # Agent VM image name
   vmImageName: 'windows-2019'
