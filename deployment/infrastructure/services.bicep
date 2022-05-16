@@ -50,3 +50,30 @@ module functionApp 'function-app.bicep' = {
     appServicePlan
   ]
 }
+
+module functionAppAccessPolicy 'key-vault-access-policy.bicep' = {
+  name: 'keyVaultAccessPolicy-deployment'
+  params: {
+    keyVaultName: keyVault.outputs.keyVaultName
+    principalId: functionApp.outputs.principalId
+    permission: 'low'
+  }
+  dependsOn: [
+    functionApp
+    keyVault
+  ]
+}
+
+module apiFunctionAppSettingsModule 'function-app-settings.bicep' = {
+  name: 'functionAppSettings-deployment'
+  params: {
+    appInsightsKey: applicationInsights.outputs.appInsightsKey
+    functionAppName: functionApp.outputs.functionAppName
+    storageAccountSecretUri: storageAccount.outputs.storageAccountSecretUri
+    runtime: 'dotnet'
+  }
+  dependsOn: [
+    functionApp
+    functionAppAccessPolicy
+  ]
+}
